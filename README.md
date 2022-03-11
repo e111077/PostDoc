@@ -5,6 +5,13 @@
   </a>
 </p>
 
+[![Build Status](https://github.com/e111077/PostDoc/actions/workflows/tests.yml/badge.svg)](https://github.com/e111077/PostDoc/actions/workflows/tests.yml)
+[![Published on npm](https://img.shields.io/npm/v/postdoc-lib.svg?logo=npm)](https://www.npmjs.com/package/postdoc-lib)
+[![Downloads](https://img.shields.io/npm/dm/postdoc-lib.svg?logo=npm)](https://www.npmjs.com/package/postdoc-lib)
+[![License](https://img.shields.io/npm/l/postdoc-lib.svg?logo=npm)](https://www.npmjs.com/package/postdoc-lib)
+[![Version](https://img.shields.io/npm/v/postdoc-lib.svg?logo=npm)](https://www.npmjs.com/package/postdoc-lib)
+![GitHub stars](https://img.shields.io/github/stars/e111077/PostDoc.svg?style=social)
+
 ## Overview
 
 A PostDoc JS library that simplifies message passing between iframes, web workers, or
