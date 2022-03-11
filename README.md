@@ -17,7 +17,7 @@ Initially created to simplify communication with an iframe that reloads often.
 ### Install
 
 ```sh
-npm i postdoc
+npm i post-doc
 ```
 
 ### Usage
