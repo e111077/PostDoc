@@ -32,7 +32,6 @@ describe('worker and host', () => {
       messageReceiver: worker,
       messageTarget: worker,
       onMessage: (event: MessageEvent) => {
-        console.log('got message')
         messagesReceived.push(event.data);
       },
     });
@@ -53,7 +52,6 @@ describe('worker and host', () => {
       messageReceiver: worker,
       messageTarget: worker,
       onMessage: (event: MessageEvent) => {
-        console.log('got message')
         messagesReceived.push(event.data);
       },
     });
