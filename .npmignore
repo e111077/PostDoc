@@ -3,3 +3,6 @@ node_modules
 test
 demo
 lib/test
+tsconfig.json
+web-test-runner.config.mjs
+index.html

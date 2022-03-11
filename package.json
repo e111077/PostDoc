@@ -1,5 +1,5 @@
 {
-  "name": "post-doc",
+  "name": "postdoc",
   "version": "1.0.0",
   "description": "",
   "module": "lib/postdoc.js",
