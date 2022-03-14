@@ -124,6 +124,52 @@ describe('iframe and host', () => {
     expect(iframeText).to.equal(MESSAGE);
   });
 
+  it('onMessage can be reset via props', async () => {
+    const messagesReceived: string[] = [];
+    const messagesReceived2: string[] = [];
+
+    const loaded = new ResettablePromise();
+
+    const iframe = await fixture<HTMLIFrameElement>(html`
+      <iframe
+        src="/src/test/frame-code/frame.html"
+        @load=${() => loaded.resolve()}
+      ></iframe>
+    `);
+
+    await loaded.completed;
+    // intentionally miss initial handshake
+    await wait(50);
+
+    postdoc = new PostDoc({
+      messageReceiver: window,
+      messageTarget: iframe.contentWindow!,
+      onMessage: (event: MessageEvent) => {
+        messagesReceived.push(event.data);
+      },
+    });
+
+    await postdoc.handshake;
+    await wait(50);
+    expect(messagesReceived.length).to.equal(1);
+    expect(messagesReceived[0]).to.equal(FRAME_INITIAL_MESSAGE);
+
+    postdoc.onMessage = (event: MessageEvent) => {
+      messagesReceived2.push(event.data);
+    };
+
+    loaded.reset();
+    iframe.contentWindow!.location.reload();
+
+    await loaded.completed;
+    await postdoc.handshake;
+    await wait(50);
+
+    expect(messagesReceived.length).to.equal(1);
+    expect(messagesReceived2.length).to.equal(1);
+    expect(messagesReceived2[0]).to.equal(FRAME_INITIAL_MESSAGE);
+  });
+
   it('inferTarget:false will not infer target', async () => {
     const messagesReceived: string[] = [];
     const onMessage = (event: MessageEvent) => {
@@ -228,6 +274,69 @@ describe('iframe and host', () => {
 
     const iframeText2 = checkIframeContent(iframe);
     expect(iframeText2).to.be.null;
+  });
+
+  it('ignores second iframe from non-matching source', async () => {
+    const messagesReceived: string[] = [];
+    const onMessage = (event: MessageEvent) => {
+      messagesReceived.push(event.data);
+    };
+
+    const loaded = new ResettablePromise();
+    const loaded2 = new ResettablePromise();
+
+    const iframes = await fixture<HTMLDivElement>(html`
+      <div>
+        <iframe
+          src="/src/test/frame-code/frame.html"
+          @load=${() => loaded.resolve()}
+        ></iframe>
+        <iframe
+          src="/src/test/frame-code/frame.html"
+          @load=${() => loaded2.resolve()}
+        ></iframe>
+      </div>
+    `);
+
+    const iframe = iframes.querySelectorAll('iframe')[0];
+    const iframe2 = iframes.querySelectorAll('iframe')[1];
+
+    await Promise.all([loaded.completed, loaded2.completed]);
+    // Purposefully miss the initial handshake
+    await wait(50);
+
+    postdoc = new PostDoc({
+      onMessage,
+      messageReceiver: window,
+    });
+
+    // set up correctly
+    expect(postdoc.messageTarget).to.be.null;
+
+    // Connect postdoc to first iframe by inferring target
+    loaded.reset();
+    iframe.contentWindow!.location.reload();
+
+    await loaded.completed;
+    await postdoc.handshake;
+    await wait(50);
+
+    expect(postdoc.messageTarget).to.equal(iframe.contentWindow!);
+    expect(messagesReceived.length).to.equal(1);
+    expect(messagesReceived[0]).to.equal(FRAME_INITIAL_MESSAGE);
+
+    // Reload non-matching iframe
+    loaded2.reset();
+    iframe2.contentWindow!.location.reload();
+
+    await loaded2.completed;
+    await postdoc.handshake;
+    await wait(50);
+
+    // state should be the same since ignored
+    expect(postdoc.messageTarget).to.equal(iframe.contentWindow!);
+    expect(messagesReceived.length).to.equal(1);
+    expect(messagesReceived[0]).to.equal(FRAME_INITIAL_MESSAGE);
   });
 
   it('switching iframes', async () => {

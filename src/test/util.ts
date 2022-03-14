@@ -1,5 +1,7 @@
 import { PostDoc } from "../postdoc";
 
+/* c8 ignore start */
+
 export const INITIAL_MESSAGE = 'Initial message';
 
 export const wait = async (ms: number) =>
@@ -69,3 +71,4 @@ export class WorkerTestFixture {
     }
   }
 }
+/* c8 ignore end */
