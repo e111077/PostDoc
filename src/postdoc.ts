@@ -24,7 +24,7 @@ export interface PostdocConfig {
 
 const defaultConfig = {
   origin: '*',
-  inferTarget: true,
+  inferTarget: false,
   onMessage: () => {},
 };
 
@@ -57,10 +57,10 @@ enum MESSAGE_TYPE {
  *    console.log('Parent received:', message.data);
  * const postdoc = new PostDoc({
  *    messageReciever: window,
- *    // note: messageTarget is optional. If not included PostDoc will
+ *    // note: messageTarget is optional if `inferTarget` is `true`. If
+ *    // `inferTarget` is `true` an `messageTarget` is not included PostDoc will
  *    // automatically set it to the first MessageEventSource that fires a
- *    // handshake message to the given messageReceiver unless `inferTarget` is
- *    // set to false.
+ *    // handshake message to the given messageReceiver.
  *    messageTarget: iframe.contentWindow,
  *    onMessage,
  *    // Origin is also optional and defaults to '*' if posting to a Window.
@@ -161,10 +161,10 @@ export class PostDoc {
   }
 
   /**
-   * Target for handshake messages. If omitted, this will be set to the first
-   * MessageEventSource that fires a handshake message to the given
-   * messageReceiver as long as `inferTarget` is not `false`, set at the
-   * constructor.
+   * Target for handshake messages. If `inferTarget` is `true` and
+   * `messageTarget` is omitted, `messageTarget` will be set to the first
+   * `MessageEventSource` that fires a handshake message to the given
+   * `messageReceiver`.
    *
    * Note, if handshake is fired to receiver before PostDoc is instantiated, the
    * handshake will not resolve. This can be prevented in most cases by setting

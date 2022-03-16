@@ -86,7 +86,7 @@ import { PostDoc } from 'postdoc';
 | `handshake` | `Promise<PostDoc>` | Promise that resolves when the pairing is complete between the given PostDoc instance and the instance at the other end of the `messageTarget` |
 | `onMessage` | `<T = unknown>(message: MessageEvent<T>) => unknown`| The function to be called when a message is received from the paired PostDoc |
 | `messageReceiver` | `MessageReceiver\|null`<sup>*</sup> | The source that should be listened to for hanshake messages. e.g. `winow` when communicating with an iframe that will post on `window.top` or `Worker` when communicating with a worker that will post on `self` |
-| `messageTarget` | `PostMessageTarget\|null`<sup>\*\*</sup> | The target for handhsake messages. If omitted, this will be set to the first `MessageEventSource` that fires a handshake message to the given `messageReceiver` as long as `inferTarget`<sup>\*\*\*</sup> is not `false`, set at the constructor. **NOTE:** If handshake message is fired to receiver before PostDoc is instantiated, the handshake will not resolve. This can be prevented in most cases by setting `messageTarget` in both message sources. Additionally, `messageReceiver` should be set before `messageTarget` or set in the constructor. |
+| `messageTarget` | `PostMessageTarget\|null`<sup>\*\*</sup> | The target for handhsake messages. If `inferTarget`<sup>\*\*\*</sup> is `true` and `messageTarget` is omitted, `messageTarget` will be set to the first `MessageEventSource` that fires a handshake message to the given `messageReceiver`. **NOTE:** If handshake message is fired to receiver before PostDoc is instantiated, the handshake will not resolve. This can be prevented in most cases by setting `messageTarget` in both message sources. Additionally, `messageReceiver` should be set before `messageTarget` or set in the constructor. |
 
 \* See [MessageReceiver](#messagereceiver) for more information.
 
@@ -121,7 +121,7 @@ import { PostDoc } from 'postdoc';
 | ------ | ---- | ------- | ----------- |
 | `origin` | `string` | `'*'` | The origin used for postMessage for Window targets |
 | `onMessage` | `<T = unknown>(message: MessageEvent<T>) => unknown` | `() => {}` | See `onMessage` in [Properties](#properties) for more information. |
-| `inferTarget` | `boolean` | `true` | If `true`, the `messageTarget` will be inferred to be the first `MessageEventSource` that fires a handshake message to the given `messageReceiver`. If `false`, `messageTarget` must be set by the user. |
+| `inferTarget` | `boolean` | `false` | If `true`, and `messageTarget` is not defined, the `messageTarget` will be inferred to be the first `MessageEventSource` that fires a handshake message to the given `messageReceiver`. If `false`, `messageTarget` must be set by the user. |
 | `messageTarget` | `PostMessageTarget|undefined` | `undefined` | See `messageTarget` in [Properties](#properties) for more information. |
 | `messageReceiver` | `MessageReceiver|undefined` | `undefined` | See `messageReceiver` in [Properties](#properties) for more information. |
 

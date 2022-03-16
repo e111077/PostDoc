@@ -22,7 +22,7 @@ describe('Basic Setup', () => {
   it('default values are set correctly', async () => {
     postdoc = new PostDoc();
     expect((postdoc as unknown as PostDocInternal)._origin).to.equal('*');
-    expect((postdoc as unknown as PostDocInternal)._inferTarget).to.equal(true);
+    expect((postdoc as unknown as PostDocInternal)._inferTarget).to.equal(false);
     expect(postdoc.messageReceiver).to.equal(null);
     expect(postdoc.messageTarget).to.equal(null);
     expect(postdoc.onMessage).to.be.ok;
@@ -41,7 +41,7 @@ describe('Basic Setup', () => {
 
     postdoc = new PostDoc({
       origin: '*',
-      inferTarget: false,
+      inferTarget: true,
       messageReceiver,
       messageTarget,
       onMessage,
@@ -49,7 +49,7 @@ describe('Basic Setup', () => {
 
     expect((postdoc as unknown as PostDocInternal)._origin).to.equal('*');
     expect((postdoc as unknown as PostDocInternal)._inferTarget).to.equal(
-      false
+      true
     );
     expect(postdoc.messageReceiver).to.equal(messageReceiver);
     expect(postdoc.messageTarget).to.equal(messageTarget);

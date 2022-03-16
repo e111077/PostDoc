@@ -16,6 +16,7 @@ describe('iframe and host', () => {
 
     postdoc = new PostDoc({
       messageReceiver: window,
+      inferTarget: true,
       onMessage: (event: MessageEvent) => {
         messagesReceived.push(event.data);
       },
@@ -35,6 +36,7 @@ describe('iframe and host', () => {
   it('can post when set up before load via constructor', async () => {
     postdoc = new PostDoc({
       messageReceiver: window,
+      inferTarget: true
     });
 
     const iframe = await fixture<HTMLIFrameElement>(html`
@@ -177,7 +179,6 @@ describe('iframe and host', () => {
     };
     let resolveLoaded = (_value?: unknown) => {};
     postdoc = new PostDoc({
-      inferTarget: false,
       onMessage,
       messageReceiver: window,
     });
@@ -308,6 +309,7 @@ describe('iframe and host', () => {
     postdoc = new PostDoc({
       onMessage,
       messageReceiver: window,
+      inferTarget: true
     });
 
     // set up correctly
@@ -510,6 +512,7 @@ describe('iframe and host', () => {
     postdoc = new PostDoc({
       onMessage: onMessageFactory(messagesReceived),
       messageReceiver: window,
+      inferTarget: true
     });
 
     const load = new ResettablePromise();
