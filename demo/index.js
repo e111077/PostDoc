@@ -9,6 +9,7 @@ const onMessage = (message) => {
 
 const postdoc = new PostDoc({
   messageReceiver: window,
+  inferTarget: true,
   onMessage
 });
 
