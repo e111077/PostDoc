@@ -258,7 +258,7 @@ export class PostDoc {
       throw new Error('messageTarget not defined');
     }
 
-    if (globalThis.Window && this._messageTarget instanceof Window) {
+    if ('window' in this._messageTarget) {
       this._messageTarget.postMessage(message, this._origin, transfer);
     } else {
       this._messageTarget.postMessage(message, { transfer });
