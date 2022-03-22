@@ -16,7 +16,7 @@ export interface messageReceiver {
 
 export interface PostdocConfig {
   origin: string;
-  onMessage: <T = unknown>(message: MessageEvent<T>) => unknown;
+  onMessage: (message: MessageEvent) => unknown;
   inferTarget: boolean;
   messageTarget?: PostMessageTarget;
   messageReceiver?: messageReceiver;
@@ -96,7 +96,7 @@ export class PostDoc {
     () => {};
   private _messageChannel: MessageChannel | null = null;
   private _messagePort: MessagePort | null = null;
-  private _onMessage: <T = unknown>(message: MessageEvent<T>) => unknown;
+  private _onMessage: (message: MessageEvent) => unknown;
   private _handshake!: Promise<PostDoc>;
   private _handshakeComplete: boolean = false;
   private _messagePortDirty: boolean = false;
@@ -118,7 +118,7 @@ export class PostDoc {
   }
 
   set onMessage(
-    newOnMessage: <T = unknown>(message: MessageEvent<T>) => unknown
+    newOnMessage: (message: MessageEvent) => unknown
   ) {
     if (this._messagePort) {
       this._messagePort.removeEventListener('message', this._onMessage);

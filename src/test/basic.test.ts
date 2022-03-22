@@ -37,7 +37,7 @@ describe('Basic Setup', () => {
 
     const messageReceiver = window;
 
-    const onMessage = () => true;
+    const onMessage = (_message: MessageEvent<string>) => true;
 
     postdoc = new PostDoc({
       origin: '*',
