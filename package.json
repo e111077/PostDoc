@@ -1,6 +1,6 @@
 {
   "name": "postdoc-lib",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A JS library that simplifies postMessages and can receive multiple handshakes",
   "module": "lib/postdoc.js",
   "main": "lib/postdoc.js",
